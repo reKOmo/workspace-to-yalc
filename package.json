@@ -1,0 +1,15 @@
+{
+  "name": "workspace-to-yalc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "workspace-to-yalc": "src/index.js"
+  },
+  "author": "rekomo",
+  "license": "MIT",
+  "dependencies": {
+    "detect-indent": "^7.0.0"
+  }
+}

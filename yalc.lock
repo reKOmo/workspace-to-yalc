@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "test": {
+      "signature": "",
+      "link": true
+    }
+  }
+}

@@ -1,15 +1,23 @@
 {
   "name": "workspace-to-yalc",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Create yalc.lock file for workspace packages",
+  "main": "src/index.js",
   "type": "module",
   "bin": {
     "workspace-to-yalc": "src/index.js"
   },
-  "author": "rekomo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reKOmo/workspace-to-yalc"
+  },
+  "author": "reKOmo",
   "license": "MIT",
   "dependencies": {
     "detect-indent": "^7.0.0"
-  }
+  },
+  "keywords": [
+    "yalc",
+    "docker"
+  ]
 }

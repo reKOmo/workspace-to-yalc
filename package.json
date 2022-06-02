@@ -1,6 +1,6 @@
 {
   "name": "workspace-to-yalc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create yalc.lock file for workspace packages",
   "main": "src/index.js",
   "type": "module",
@@ -24,8 +24,7 @@
     "test": "ava"
   },
   "devDependencies": {
-    "ava": "^4.3.0",
-    "rewire": "^6.0.0"
+    "ava": "^4.3.0"
   },
   "ava": {
     "files": [

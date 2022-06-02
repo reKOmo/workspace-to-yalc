@@ -8,7 +8,7 @@ function argumentPassed(arg) {
 }
 
 function getIndent(str) {
-    return detectIndent(str).indent || '    ';
+    return detectIndent(str).indent || "  ";
 }
 
 function readPackage() {
@@ -28,10 +28,10 @@ function readPackage() {
 }
 
 function saveJSON(path, obj) {
-    const indent = "    "
+    let indent = "  ";
     if (obj.__indent) {
-        indent = pkg.__indent;
-        delete pkg.__indent;
+        indent = obj.__indent;
+        delete obj.__indent;
     }
 
     writeFileSync(path, JSON.stringify(obj, null, indent));
@@ -39,9 +39,6 @@ function saveJSON(path, obj) {
 
 function savePackage(pkg) {
     pkg = Object.assign({}, pkg);
-
-    const indent = pkg.__indent;
-    delete pkg.__indent;
 
     try {
         saveJSON("package.json", pkg);
@@ -119,8 +116,8 @@ function main() {
         newYalcLock.__indent = pkg.__indent;
 
         saveJSON("yalc.lock", newYalcLock);
-    } catch {
-        console.error("Couldn't save new lockfile")
+    } catch (err) {
+        console.error("Couldn't save new lockfile", err);
     }
 
     if (!argumentPassed("--lockfile-only")) {

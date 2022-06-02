@@ -3,6 +3,9 @@
 import { readdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import detectIndent from "detect-indent";
 
+function argumentPassed(arg) {
+    return process.argv.includes(arg, 2);
+}
 
 function getIndent(str) {
     return detectIndent(str).indent || '    ';
@@ -24,6 +27,29 @@ function readPackage() {
     }
 }
 
+function saveJSON(path, obj) {
+    const indent = "    "
+    if (obj.__indent) {
+        indent = pkg.__indent;
+        delete pkg.__indent;
+    }
+
+    writeFileSync(path, JSON.stringify(obj, null, indent));
+}
+
+function savePackage(pkg) {
+    pkg = Object.assign({}, pkg);
+
+    const indent = pkg.__indent;
+    delete pkg.__indent;
+
+    try {
+        saveJSON("package.json", pkg);
+    } catch {
+        console.error("Package.json couldn't be modified");
+    }
+}
+
 function getWorkspacePackagesFromPkg(pkg) {
     const workspacePackages = [];
 
@@ -37,7 +63,8 @@ function getWorkspacePackagesFromPkg(pkg) {
     }
 
     if (pkg.devDependencies) {
-        for (const [key, val] in pkg.devDependencies) {
+        for (const key in pkg.devDependencies) {
+            const val = pkg.devDependencies[key];
             if (val.startsWith("workspace:")) {
                 workspacePackages.push(key);
             }
@@ -64,6 +91,20 @@ function deleteOldLockfile() {
     }
 }
 
+function modifyDepsInPkg(pkg, workspacePackages) {
+    pkg = Object.assign({}, pkg);
+
+    workspacePackages.forEach(p => {
+        if (pkg.dependencies[p]) {
+            pkg.dependencies[p] = "link:.yalc/" + p;
+        } else if (pkg.devDependencies[p]) {
+            pkg.devDependencies[p] = "link:.yalc/" + p;
+        }
+    })
+
+    return pkg;
+}
+
 function main() {
 
     const pkg = readPackage();
@@ -75,13 +116,32 @@ function main() {
     try {
         deleteOldLockfile();
 
-        writeFileSync("yalc.lock", JSON.stringify(newYalcLock, null, pkg.__indent));
+        newYalcLock.__indent = pkg.__indent;
+
+        saveJSON("yalc.lock", newYalcLock);
     } catch {
         console.error("Couldn't save new lockfile")
+    }
+
+    if (!argumentPassed("--lockfile-only")) {
+        const modPkg = modifyDepsInPkg(pkg, workspacePackages);
+
+        savePackage(modPkg);
     }
 
 
 
 }
 
-main();
+let exports = {};
+if (process.env.NODE_ENV == "test") {
+    exports = {
+        modifyDepsInPkg,
+        packagesToYalc,
+        getWorkspacePackagesFromPkg
+    };
+} else {
+    main();
+}
+
+export default exports;

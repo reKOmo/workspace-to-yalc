@@ -19,5 +19,17 @@
   "keywords": [
     "yalc",
     "docker"
-  ]
+  ],
+  "scripts": {
+    "test": "ava"
+  },
+  "devDependencies": {
+    "ava": "^4.3.0",
+    "rewire": "^6.0.0"
+  },
+  "ava": {
+    "files": [
+      "./tests/**/*"
+    ]
+  }
 }

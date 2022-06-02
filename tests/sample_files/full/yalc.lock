@@ -1,0 +1,21 @@
+{
+  "version": "v1",
+  "packages": {
+    "eslint-config-custom": {
+      "signature": "",
+      "link": true
+    },
+    "tsconfig": {
+      "signature": "",
+      "link": true
+    },
+    "interfaces": {
+      "signature": "",
+      "link": true
+    },
+    "nodemon-config": {
+      "signature": "",
+      "link": true
+    }
+  }
+}

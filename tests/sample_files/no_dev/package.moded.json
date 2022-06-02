@@ -1,0 +1,16 @@
+{
+    "name": "test",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "@types/express": "^4.17.13",
+        "eslint-config-custom": "link:.yalc/eslint-config-custom",
+        "express": "^4.17.13",
+        "interfaces": "link:.yalc/interfaces",
+        "tsconfig": "link:.yalc/tsconfig",
+        "typescript": "^4.7.2"
+    }
+}

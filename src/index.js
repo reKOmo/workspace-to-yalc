@@ -103,7 +103,7 @@ function modifyDepsInPkg(pkg, workspacePackages) {
 }
 
 function main() {
-
+    console.log(">> Reading package.json");
     const pkg = readPackage();
 
     const workspacePackages = getWorkspacePackagesFromPkg(pkg);
@@ -111,6 +111,7 @@ function main() {
     const newYalcLock = packagesToYalc(workspacePackages);
 
     try {
+        console.log(">> Generating yalc.lock");
         deleteOldLockfile();
 
         newYalcLock.__indent = pkg.__indent;
@@ -121,6 +122,7 @@ function main() {
     }
 
     if (!argumentPassed("--lockfile-only")) {
+        console.log(">> Generating new package.json");
         const modPkg = modifyDepsInPkg(pkg, workspacePackages);
 
         savePackage(modPkg);

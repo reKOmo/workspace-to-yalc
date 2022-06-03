@@ -124,8 +124,11 @@ function main() {
     if (!argumentPassed("--lockfile-only")) {
         console.log(">> Generating new package.json");
         const modPkg = modifyDepsInPkg(pkg, workspacePackages);
-
-        savePackage(modPkg);
+        try {
+            savePackage(modPkg);
+        } catch (err) {
+            console.error("Failed to save package.json\n", err);
+        }
     }
 
 

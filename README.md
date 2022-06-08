@@ -1,6 +1,6 @@
 ## Description
 
-Looks for `workspace` protocol packages and adds them to yalc.lock for easy install in docker containsers.
+Looks for `workspace:` protocol packages and adds them to yalc.lock for easy install in docker containsers.
 
 ## Run
 
@@ -19,3 +19,7 @@ b. Run `yalc update --store-folder <path-to-mounted-store>` in project directory
 >`--lockfile-only`
 
 Only generates yalc.lock file.
+
+>`--file`
+
+Uses the `file:` protocol.

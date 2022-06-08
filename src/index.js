@@ -3,6 +3,11 @@
 import { readdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import detectIndent from "detect-indent";
 
+const config = {
+    protocol: argumentPassed("--file") ? "file" : "link",
+    lockfileOnly: argumentPassed("--lockfile-only")
+}
+
 function argumentPassed(arg) {
     return process.argv.includes(arg, 2);
 }
@@ -75,7 +80,8 @@ function packagesToYalc(workspacePackages) {
     const ob = { version: "v1", packages: {} };
 
     workspacePackages.forEach(p => {
-        ob.packages[p] = { signature: "", link: true }
+        ob.packages[p] = { signature: "" }
+        ob.packages[p][config.protocol] = true;
     })
 
     return ob;
@@ -92,10 +98,11 @@ function modifyDepsInPkg(pkg, workspacePackages) {
     pkg = Object.assign({}, pkg);
 
     workspacePackages.forEach(p => {
+        const packageVersion = `${config.protocol}:.yalc/` + p;
         if (pkg.dependencies[p]) {
-            pkg.dependencies[p] = "link:.yalc/" + p;
+            pkg.dependencies[p] = packageVersion;
         } else if (pkg.devDependencies[p]) {
-            pkg.devDependencies[p] = "link:.yalc/" + p;
+            pkg.devDependencies[p] = packageVersion;
         }
     })
 
@@ -121,7 +128,7 @@ function main() {
         console.error("Couldn't save new lockfile", err);
     }
 
-    if (!argumentPassed("--lockfile-only")) {
+    if (!config.lockfileOnly) {
         console.log(">> Generating new package.json");
         const modPkg = modifyDepsInPkg(pkg, workspacePackages);
         try {
